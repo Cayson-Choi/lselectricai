@@ -18,7 +18,10 @@ XGWX_OUTPUT_DIR = os.path.join(OUTPUT_DIR, "output")
 
 
 def log(msg):
-    print(msg)
+    try:
+        print(msg)
+    except UnicodeEncodeError:
+        print(msg.encode('cp949', errors='replace').decode('cp949'))
 
 
 def save_screenshot(name, region=None):
