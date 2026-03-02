@@ -1,0 +1,12 @@
+# Screenshots (temporary build artifacts)
+learning-data/example/ss_*.png
+learning-data/example/*.png
+!learning-data/example/result.png
+
+# XG5000 backup files
+*.xgwx_bkx0
+*.xgwx_bkx1
+*.state
+
+# Claude local settings
+.claude/settings.local.json
