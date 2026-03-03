@@ -23,7 +23,7 @@
 - 과제 18 답안: `LOADN P0001` 사용 (음변환 = 버튼 놓을 때 검출)
 - 주의: 문제에서 "양변환검출" 표현이 있어도 답안 이미지 접점기호(|P| or |N|) 확인 필수!
 
-## Block Combination
+## Block Combination ★★★ (기능장 필수)
 | IL | Function |
 |---|---|
 | AND LOAD | 블록 직렬 결합 (두 평가블록의 AND) |
@@ -84,6 +84,106 @@ OUT P0040
 | LOAD<> S1 S2 | S1 ≠ S2 → ON |
 - AND>=, OR>= 등 동일 패턴
 
+## Data Transfer Instructions (전기기능장 수준)
+| IL | Function |
+|---|---|
+| MOVP S D | S→D 전송 (P-edge, 1회 실행) |
+| FMOVP S D N | S값을 D부터 N개 연속 채움 (P-edge) |
+| INCP D | D값 1 증가 (P-edge) |
+| DECP D | D값 1 감소 (P-edge) |
+
+## Arithmetic / Logic Instructions
+| IL | Function |
+|---|---|
+| ADD S1 S2 D | S1 + S2 → D (덧셈) ★ 모의18 |
+| ADDP S1 S2 D | S1 + S2 → D (펄스 덧셈, 1회) ★ 모의17 |
+| SUB S1 S2 D | S1 - S2 → D (뺄셈) |
+| SUBP S1 S2 D | S1 - S2 → D (펄스 뺄셈, 1회) ★ 모의17 |
+| MUL S1 S2 D | S1 × S2 → D (곱셈) |
+| DIV S1 S2 D | S1 ÷ S2 → 몫 D, 나머지 D+1 (정수 나눗셈) |
+| EXPT S1 S2 D | S1^S2 → D (승곱, DWORD) ★ 모의16 |
+| MAX S D N | S부터 N개 중 최대값 → D |
+| MIN S D N | S부터 N개 중 최소값 → D |
+| BSUM S D | 비트합: S의 2진수에서 1의 갯수 → D ★ 모의18 |
+| NOT | 누산기 반전 (중간 결과 NOT) ★ De Morgan OR 출력 패턴에 필수 |
+
+## BCD Arithmetic Instructions ★ 모의19 신규
+| IL | Function |
+|---|---|
+| ADDB S1 S2 D | BCD 덧셈: S1+S2→D (BCD 형식) |
+| SUBB S1 S2 D | BCD 뺄셈: S1-S2→D (BCD 형식) |
+
+## Search / Sort Instructions
+| IL | Function |
+|---|---|
+| SCH S1 S2 D N | 검색: S2부터 N개에서 S1값 찾기 → D=첫위치, D+1=일치수 ★ 모의16 |
+| SCHP S1 S2 D1 D2 | Search Pulse: 활성 비트 위치 검색 ★ 모의17 |
+| DETECT S1 S2 D N | 배열 검출: S1부터 N개에서 S2보다 큰 값의 갯수/위치 ★ 모의20 |
+| SORT S1 S2 S3 S4 S5 | 정렬: 배열 정렬 (S1=데이터, S2~=제어파라미터) ★ 모의16 |
+
+## Array / FIFO Operations ★ 모의17,18,20 신규
+| IL | Function |
+|---|---|
+| FIWRP S D | FIFO Write Pulse: 큐에 데이터 기록 ★ 모의17 |
+| FIDEL S1 S2 D | FIFO Delete: 큐/배열에서 요소 삭제 ★ 모의17,20 |
+| FIWR S D | FIFO Write: 배열에 데이터 등록 (D=포인터+데이터) ★ 모의20 |
+| FMRP S D | 필무브레지스터 펄스 (배열 데이터 설정) ★ 모의16 |
+| SR S1 S2 S3 N | Shift Register: 비트 시프트 (S2=입력, S3=방향, N=비트수) ★ 모의17,18 |
+
+## BCD / Conversion Instructions
+| IL | Function |
+|---|---|
+| UNI S D N | S부터 N개 단위 BCD 값을 D에 합성 (예: 일의자리+십의자리 → BCD 워드) |
+| BIN S D | BCD값 S를 이진수로 변환하여 D에 저장 |
+| BCD S D | 이진수 S를 BCD로 변환하여 D에 저장 (BIN의 역변환) |
+| I2L S D | 정수(WORD)→롱(DWORD) 변환 (D,D+1에 저장) |
+| L2I S D | 롱(DWORD)→정수(WORD) 변환 |
+| BMOV S D param | 비트무브 - 특정 비트필드 추출 (예: BCD 자릿수 추출) |
+
+## Group Comparison (IL 형태)
+| IL | Function |
+|---|---|
+| ANDG> S C N | AND 그룹비교: S부터 N개 모두 > C (예: ANDG> N 0 2 → N>0 AND M>0) |
+| AND<=3 S1 S2 S3 | AND 범위비교: S1 ≤ S2 ≤ S3 |
+| AND<> S1 S2 | AND 부등비교: S1 ≠ S2 → ON ★ 모의33 |
+- LOAD/OR 형태도 존재 (LOADG>, LOAD<=3, LOAD<> 등)
+
+## Batch Instructions
+| IL | Function |
+|---|---|
+| BRST S N | S부터 N개 릴레이 일괄 리셋 (연속 실행) |
+| BRSTP S N | S부터 N개 릴레이 일괄 리셋 (P-edge, 1회) |
+
+## Range Comparison (3-operand)
+| IL | Function |
+|---|---|
+| <=3 S1 S2 S3 | S1 ≤ S2 ≤ S3 → ON (범위 내 확인) |
+
+## Jump / Label (래더 전용 - IL에서는 MPUSH/MLOAD/MPOP으로 대체)
+| IL | Function |
+|---|---|
+| JMP N | 라벨 N으로 점프 (중간 렁 건너뜀) |
+| LBL N | 라벨 N (점프 도착지) |
+
+## Index Register & Indexed Addressing
+- Z000~Z009: 인덱스 레지스터
+- M00000[Z000] → M(00000 + Z000값) 동적 접근
+- D, M, P 등 대부분 디바이스에 인덱스 사용 가능
+
+## Indirect Addressing ★ 모의17 신규
+- **#D00000**: D00000의 값을 주소로 사용 (포인터)
+- 예: D00000=100이면 #D00000 → D00100 참조
+- 런타임에 동적으로 참조 대상 변경 가능
+
+## D Register Bit Addressing
+- D06241.0 → D06241의 비트0 (개별 비트를 플래그로 사용)
+- D06241.5 → D06241의 비트5
+- M 릴레이처럼 SET/RST 가능
+- **★★★ 비트 10 이상은 16진수 필수!** (XG5000 검증완료)
+  - .0~.9 → 그대로 사용
+  - .10 → .A, .11 → .B, .12 → .C, .13 → .D, .14 → .E, .15 → .F
+  - `.10`은 XG5000 에러 발생! 반드시 `.A` 사용
+
 ## END
 | IL | Function |
 |---|---|
@@ -96,6 +196,7 @@ OUT P0040
 - T: 타이머 (T0000~T0255)
 - C: 카운터 (C0000~C0255)
 - D: 데이터레지스터 (D00000~)
+- Z: 인덱스레지스터 (Z000~Z009)
 - F: 특수릴레이 (F00000~)
 
 ## IL 코드 실전 예제 (검증 완료)

@@ -1,7 +1,9 @@
-# Screenshots (temporary build artifacts)
-learning-data/example/ss_*.png
-learning-data/example/*.png
-!learning-data/example/result.png
+# Python
+__pycache__/
+*.pyc
+
+# Temp images
+temp_*.png
 
 # XG5000 backup files
 *.xgwx_bkx0

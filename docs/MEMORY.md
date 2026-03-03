@@ -10,9 +10,14 @@
 - Context: 전기기능장 실기시험 관련 PLC 프로그래밍 지원
 
 ## Key Learning Data Files
-- `learning-data/XBC-DR30SU 매뉴얼.pdf` (17 pages) - 화성폴리텍 제작 학습 매뉴얼
-- `learning-data/XBC-SU_XBE-E_T24_Manual_V2.2_202406_KR.pdf` (383 pages) - 공식 매뉴얼
-- `learning-data/XG5000Help_kor.pdf` (814 pages) - XG5000 소프트웨어 도움말
+- `learning-data/XBC-DR30SU 매뉴얼.pdf` (17p) - 화성폴리텍 학습 매뉴얼
+- `learning-data/XBC-SU_XBE-E_T24_Manual_V2.2_202406_KR.pdf` (383p) - 공식 매뉴얼
+- `learning-data/XG5000Help_kor.pdf` (814p) - XG5000 도움말
+- `learning-data/XG5000_XGK_XGB_사용설명서.pdf` - XG5000 사용설명서
+- `learning-data/XG5000_XGK_XGB_사용설명서5장.pdf` - LD 편집 (5장)
+- `learning-data/XG5000_XGK_XGB_사용설명서6장.pdf` - IL 편집 (6장)
+- `learning-data/XGK_XGB명령어집 국문V2.8.pdf` - 명령어집
+- `전기기능장예제/` - 모의고사 16~21, 31~34 답안 PDF (래더+IL)
 
 ## Detailed Notes
 - [XBC PLC Specs & Devices](xbc-plc-specs.md)
@@ -75,9 +80,38 @@
 - `>= T000 30` → 별도 TON + a접점으로 대체
 - `<= T000 50` → 별도 TON + b접점으로 대체
 - 타이머 수 증가하지만 비교명령 0개로 동일 동작 구현 가능
-- 과제 17 (1회 시작/정지): 타이머 4개, 별도 LOAD → `problem17_basic.py` ✅
-- 과제 18 (반복 사이클): 타이머 3개, MPUSH 공통입력 + T002 b접점 자동리셋 → `problem18_basic.py` ✅
+- 과제 17 (1회 시작/정지): 타이머 4개, 별도 LOAD
+- 과제 18 (반복 사이클): 타이머 3개, MPUSH 공통입력 + T002 b접점 자동리셋
 - 상세: [IL→래더 변환 패턴](il-to-ladder-patterns.md)
+
+## 전기기능장 모의고사 분석
+- [IL 답안 종합 분석](exam-il-answers.md) ← ★★★★★ 4개 문제 IL 코드 + 공통 프레임워크 + 핵심 패턴
+- [모의고사 16 분석](exam-problem-16.md) ← ★★★★★ 승곱계산(EXPT/SCH/SORT) + BCD 자릿수 표시
+- [모의고사 17 분석](exam-problem-17.md) ← ★★★★★ FIFO큐(FIWRP/FIDEL/SCHP) + SR시프트레지스터 + 간접주소(#D)
+- [모의고사 18 분석](exam-problem-18.md) ← ★★★★★ 배수계산 + BSUM + SR 순차점등
+- [모의고사 19 분석](exam-problem-19.md) ← ★★★★★ BCD 덧셈/뺄셈(ADDB/SUBB) + 다단계 입력 (342스텝 최장!)
+- [모의고사 20 분석](exam-problem-20.md) ← ★★★★★ 배열처리(DETECT/SCH/FIDEL/FIWR) + 타이머 미사용
+- [모의고사 21 분석](exam-problem-21.md) ← ★★★★ MIN/MUL + 비트마스크 + De Morgan OR 출력
+- [모의고사 31 분석](exam-problem-31.md) ← ★★★★★ MUL/SUB 시간계산 + ON/OFF 구간분리
+- [모의고사 32 분석](exam-problem-32.md) ← ★★★★ BCD 연산 + 비트 매핑
+- [모의고사 33 분석](exam-problem-33.md) ← ★★★★★ 이중포인터 스위프 + 인덱스 어드레싱
+- [모의고사 34 분석](exam-problem-34.md) ← ★★★★ 핑퐁 왕복 + 만남 카운터
+
+### IL 답안에서 배운 핵심 패턴
+- **공통 프레임워크**: 시작→리셋→입력(중첩MPUSH)→조건(ANDG>)→연산→동작(1초타이머)→출력→END
+- **De Morgan OR 출력**: `LOAD NOT A / AND NOT B / NOT / OUT Y` = `A OR B → Y`
+- **이중 부정**: `LOAD NOT X / NOT` = `LOAD X` (XG5000 LD→IL 변환기 패턴)
+- **OR LOAD/AND LOAD**: 복합 블록 결합 (`LOAD= / AND / LOAD= / AND / OR LOAD / AND LOAD`)
+- **한글 변수명**: XG5000 변수 테이블에서 정의 후 IL에서 사용 가능
+- **새 명령어 총정리**: MUL, SUB, NOT, BRST, ANDG>, AND<=3, AND<>, OR LOAD, ANDN, EXPT, SCH, SCHP, SORT, I2L, L2I, BCD, BMOV, FMRP, ADD, ADDP, SUBP, BSUM, ADDB, SUBB, DETECT, FIWRP, FIWR, FIDEL, SR, #D간접주소
+
+### "눌렀다 놓으면" 표현 주의! (실습과제 분석)
+| 과제 | 문제 원문 | 답안 처리 |
+|------|----------|-----------|
+| 18 | PB2 눌렀다 놓으면 정지 | LOADN P0001 (음변환) |
+| 19 | PB1 눌렀다 놓으면 시작 | 일반 a접점 자기유지 |
+| 20 | PB2 눌렀다 놓으면 정지 | 일반 b접점 자기유지 해제 |
+→ "눌렀다 놓으면" ≠ 반드시 음변환검출. **답안 이미지 접점 기호가 최종 기준!**
 
 ### 치명적 에러 경험 (반드시 기억!)
 1. **프로젝트 이름 미입력** → "프로젝트 파일 이름을 입력하여야 합니다" 에러
