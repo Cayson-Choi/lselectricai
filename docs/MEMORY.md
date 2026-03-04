@@ -92,6 +92,7 @@
 - [모의고사 19 분석](exam-problem-19.md) ← ★★★★★ BCD 덧셈/뺄셈(ADDB/SUBB) + 다단계 입력 (342스텝 최장!)
 - [모의고사 20 분석](exam-problem-20.md) ← ★★★★★ 배열처리(DETECT/SCH/FIDEL/FIWR) + 타이머 미사용
 - [모의고사 21 분석](exam-problem-21.md) ← ★★★★ MIN/MUL + 비트마스크 + De Morgan OR 출력
+- [모의고사 26 분석](exam-problem-26.md) ← ★★★★ 구간카운터 + 자동리셋타이머(AND NOT T→TON) + 동적MOVP분기
 - [모의고사 30 분석](exam-problem-30.md) ← ★★★★★ GCD/LCM(FF토글+FIWR+SORT+SCH) + 타이머 미사용
 - [모의고사 31 분석](exam-problem-31.md) ← ★★★★★ MUL/SUB 시간계산 + ON/OFF 구간분리
 - [모의고사 32 분석](exam-problem-32.md) ← ★★★★ BCD 연산 + 비트 매핑
