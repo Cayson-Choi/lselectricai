@@ -92,6 +92,7 @@
 - [모의고사 19 분석](exam-problem-19.md) ← ★★★★★ BCD 덧셈/뺄셈(ADDB/SUBB) + 다단계 입력 (342스텝 최장!)
 - [모의고사 20 분석](exam-problem-20.md) ← ★★★★★ 배열처리(DETECT/SCH/FIDEL/FIWR) + 타이머 미사용
 - [모의고사 21 분석](exam-problem-21.md) ← ★★★★ MIN/MUL + 비트마스크 + De Morgan OR 출력
+- [모의고사 30 분석](exam-problem-30.md) ← ★★★★★ GCD/LCM(FF토글+FIWR+SORT+SCH) + 타이머 미사용
 - [모의고사 31 분석](exam-problem-31.md) ← ★★★★★ MUL/SUB 시간계산 + ON/OFF 구간분리
 - [모의고사 32 분석](exam-problem-32.md) ← ★★★★ BCD 연산 + 비트 매핑
 - [모의고사 33 분석](exam-problem-33.md) ← ★★★★★ 이중포인터 스위프 + 인덱스 어드레싱
@@ -103,7 +104,7 @@
 - **이중 부정**: `LOAD NOT X / NOT` = `LOAD X` (XG5000 LD→IL 변환기 패턴)
 - **OR LOAD/AND LOAD**: 복합 블록 결합 (`LOAD= / AND / LOAD= / AND / OR LOAD / AND LOAD`)
 - **한글 변수명**: XG5000 변수 테이블에서 정의 후 IL에서 사용 가능
-- **새 명령어 총정리**: MUL, SUB, NOT, BRST, ANDG>, AND<=3, AND<>, OR LOAD, ANDN, EXPT, SCH, SCHP, SORT, I2L, L2I, BCD, BMOV, FMRP, ADD, ADDP, SUBP, BSUM, ADDB, SUBB, DETECT, FIWRP, FIWR, FIDEL, SR, #D간접주소
+- **새 명령어 총정리**: MUL, DIV, SUB, ADD, NOT, BRST, ANDG>, AND<=3, AND<>, OR LOAD, ANDN, EXPT, SCH, SCHP, SORT, I2L, L2I, BCD, BMOV, FMRP, ADDP, SUBP, BSUM, ADDB, SUBB, DETECT, FIWRP, FIWR, FIDEL, SR, FF, #D간접주소
 
 ### "눌렀다 놓으면" 표현 주의! (실습과제 분석)
 | 과제 | 문제 원문 | 답안 처리 |

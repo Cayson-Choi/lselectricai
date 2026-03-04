@@ -58,6 +58,7 @@ OUT P0040
 | OUT NOT D | Negate Coil | 반전 출력 |
 | SET D | Set Coil | 래치 ON |
 | RST D | Reset Coil | 래치 OFF, 타이머/카운터 리셋 |
+| FF D | Flip-Flop | 실행할 때마다 0↔1 토글 ★ 모의30 |
 
 ## Timer Instructions (XGB: T0000~T0255)
 | IL | Function | Time bases: 1ms, 10ms, 100ms |
